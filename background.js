@@ -2,7 +2,7 @@ var noop = function() {},
     xhr = new XMLHttpRequest(),
     MAX_COUNT = 5;
 xhr.responseType = 'document';
-xhr.onload = function() {
+xhr.addEventListener('load', function() {
     'use strict';
     var tweetElements = this.response.querySelectorAll( 'div.original-tweet' );
     for ( var i = 0; i < MAX_COUNT; i++ ) {
@@ -27,7 +27,7 @@ xhr.onload = function() {
             chrome.notifications.clear(String(j), noop);
         }
     });
-};
+});
 
 chrome.browserAction.onClicked.addListener(function() {
     'use strict';
