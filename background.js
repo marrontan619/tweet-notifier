@@ -1,4 +1,5 @@
 var noop = function() {},
+    tweetLink = [],
     xhr = new XMLHttpRequest(),
     MAX_COUNT = 5;
 xhr.responseType = 'document';
@@ -7,8 +8,13 @@ xhr.addEventListener('load', function() {
     var tweetElements = this.response.querySelectorAll( 'div.original-tweet' );
     for ( var i = 0; i < MAX_COUNT; i++ ) {
         var icon = tweetElements[i].querySelector( '.js-retweet-text' ) ? 'retweet.jpg' : 'tweet.jpg';
-        var tweeter = tweetElements[i].dataset.name;
-        var tweet = tweetElements[i].querySelector( 'p.js-tweet-text.tweet-text' ).innerText;
+        var tweeter = tweetElements[i].dataset.name,
+            tweetParagraph = tweetElements[i].querySelector( 'p.js-tweet-text.tweet-text' ),
+            tweet = tweetParagraph.innerText;
+        tweetLink[i] =
+            tweetElements[i].querySelector( 'a.twitter-timeline-link' ) ?
+                tweetElements[i].querySelector( 'a.twitter-timeline-link' ).href : null;
+        console.log(tweetLink[i]);
         chrome.notifications.create(
             String(i),
             {
@@ -26,6 +32,12 @@ xhr.addEventListener('load', function() {
         for (var j = 0; j < MAX_COUNT; j++) {
             chrome.notifications.clear(String(j), noop);
         }
+    });
+    chrome.notifications.onClicked.addListener(function(notificationId) {
+        if (tweetLink[Number(notificationId)]) {
+            chrome.tabs.create({'url': tweetLink[Number(notificationId)]});
+        }
+        chrome.notifications.clear(notificationId, noop);
     });
 });
 
