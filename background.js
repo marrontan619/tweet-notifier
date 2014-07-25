@@ -47,7 +47,15 @@ chrome.notifications.onButtonClicked.addListener(function() {
 chrome.notifications.onClicked.addListener(function(notificationId) {
     'use strict';
     if (tweetLink[Number(notificationId)]) {
-        chrome.tabs.create({'url': tweetLink[Number(notificationId)]});
+        chrome.windows.create(
+            {
+                url: tweetLink[Number(notificationId)],
+                width: 500,
+                height: 400,
+                incognito: true
+            },
+            noop
+        );
     }
     chrome.notifications.clear(notificationId, noop);
 });
