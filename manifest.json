@@ -11,6 +11,7 @@
   },
   "permissions": [
     "notifications",
+    "tabs",
     "https://twitter.com/?lang=ja"
   ]
 }
