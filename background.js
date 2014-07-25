@@ -1,3 +1,4 @@
+/* global console */
 var noop = function() {},
     tweetLink = [],
     xhr = new XMLHttpRequest(),
@@ -28,21 +29,25 @@ xhr.addEventListener('load', function() {
             noop
         );
     }
-    chrome.notifications.onButtonClicked.addListener(function() {
-        for (var j = 0; j < MAX_COUNT; j++) {
-            chrome.notifications.clear(String(j), noop);
-        }
-    });
-    chrome.notifications.onClicked.addListener(function(notificationId) {
-        if (tweetLink[Number(notificationId)]) {
-            chrome.tabs.create({'url': tweetLink[Number(notificationId)]});
-        }
-        chrome.notifications.clear(notificationId, noop);
-    });
 });
 
 chrome.browserAction.onClicked.addListener(function() {
     'use strict';
     xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
     xhr.send();
+});
+
+chrome.notifications.onButtonClicked.addListener(function() {
+    'use strict';
+    for (var j = 0; j < MAX_COUNT; j++) {
+        chrome.notifications.clear(String(j), noop);
+    }
+});
+
+chrome.notifications.onClicked.addListener(function(notificationId) {
+    'use strict';
+    if (tweetLink[Number(notificationId)]) {
+        chrome.tabs.create({'url': tweetLink[Number(notificationId)]});
+    }
+    chrome.notifications.clear(notificationId, noop);
 });
