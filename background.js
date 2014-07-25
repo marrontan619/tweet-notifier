@@ -1,12 +1,12 @@
 var createNotification = function() {
-'use strict';
+    'use strict';
     var noop = function() {};
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'document';
     xhr.onload = function() {
         var tweetElements = this.response.querySelectorAll( 'div.original-tweet' );
-        for (var i = 0; i < 10; i++) {
-            var icon = tweetElements[i].querySelector( '.js-retweet-text' ) === null ? 'tweet.jpg' : 'retweet.jpg';
+        for ( var i = 0; i < 5; i++ ) {
+            var icon = tweetElements[i].querySelector( '.js-retweet-text' ) ? 'retweet.jpg' : 'tweet.jpg';
             var tweeter = tweetElements[i].dataset.name;
             var tweet = tweetElements[i].querySelector( 'p.js-tweet-text.tweet-text' ).innerText;
             chrome.notifications.create(
@@ -26,4 +26,7 @@ var createNotification = function() {
     xhr.send();
 };
 
-createNotification();
+chrome.browserAction.onClicked.addListener(function() {
+    'use strict';
+    createNotification();
+});
