@@ -8,7 +8,8 @@ var MAX_COUNT = 5,
         }
     },
     tweetLink = [],
-    xhr = new XMLHttpRequest();
+    xhr = new XMLHttpRequest(),
+    timeoutId;
 xhr.responseType = 'document';
 xhr.addEventListener('load', function() {
     'use strict';
@@ -21,7 +22,6 @@ xhr.addEventListener('load', function() {
         tweetLink[i] =
             tweetElements[i].querySelector( 'a.twitter-timeline-link' ) ?
                 tweetElements[i].querySelector( 'a.twitter-timeline-link' ).href : null;
-        console.log(tweetLink[i]);
         chrome.notifications.create(
             String(i),
             {
@@ -39,9 +39,10 @@ xhr.addEventListener('load', function() {
 
 chrome.browserAction.onClicked.addListener(function() {
     'use strict';
+    clearTimeout(timeoutId);
     xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
     xhr.send();
-    setTimeout(allClear, Math.floor(MAX_COUNT / 3 + 1) * 8000);
+    timeoutId = setTimeout(allClear, Math.floor(MAX_COUNT / 3 + 1) * 8000);
 });
 
 chrome.notifications.onButtonClicked.addListener(allClear);
