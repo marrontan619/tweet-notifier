@@ -1,8 +1,14 @@
 /* global console */
-var noop = function() {},
+var MAX_COUNT = 5,
+    noop = function() {},
+    allClear = function() {
+        'use strict';
+        for (var j = 0; j < MAX_COUNT; j++) {
+            chrome.notifications.clear(String(j), noop);
+        }
+    },
     tweetLink = [],
-    xhr = new XMLHttpRequest(),
-    MAX_COUNT = 5;
+    xhr = new XMLHttpRequest();
 xhr.responseType = 'document';
 xhr.addEventListener('load', function() {
     'use strict';
@@ -35,14 +41,10 @@ chrome.browserAction.onClicked.addListener(function() {
     'use strict';
     xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
     xhr.send();
+    setTimeout(allClear, Math.floor(MAX_COUNT / 3 + 1) * 8000);
 });
 
-chrome.notifications.onButtonClicked.addListener(function() {
-    'use strict';
-    for (var j = 0; j < MAX_COUNT; j++) {
-        chrome.notifications.clear(String(j), noop);
-    }
-});
+chrome.notifications.onButtonClicked.addListener(allClear);
 
 chrome.notifications.onClicked.addListener(function(notificationId) {
     'use strict';
