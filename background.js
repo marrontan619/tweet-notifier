@@ -1,4 +1,3 @@
-/* global console */
 var MAX_COUNT = 5,
     noop = function() {},
     allClear = function() {
@@ -8,15 +7,17 @@ var MAX_COUNT = 5,
         }
     },
     tweetLink = [],
-    timeoutId;
-    xhr = new XMLHttpRequest(),
+    timeoutId,
+    xhr = new XMLHttpRequest();
 
 xhr.responseType = 'document';
 xhr.addEventListener( 'load', function() {
     'use strict';
     var tweetElements = this.response.querySelectorAll('div.original-tweet');
     for ( var i = 0; i < MAX_COUNT; i++ ) {
-        var icon = tweetElements[i].querySelector('.js-retweet-text') ? 'retweet.jpg' : 'tweet.jpg',
+        var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
+            icon = isRetweet ? 'retweet.jpg' : 'tweet.jpg',
+            retweeter = isRetweet ? isRetweet.innerText : null,
             tweeter = tweetElements[i].dataset.name,
             tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
             tweet = tweetParagraph.innerText,
@@ -34,6 +35,7 @@ xhr.addEventListener( 'load', function() {
                 iconUrl: icon,
                 title: tweeter,
                 message: tweet,
+                contextMessage: retweeter,
                 buttons: buttonItems,
                 isClickable: true
             },
@@ -50,8 +52,9 @@ chrome.browserAction.onClicked.addListener(function() {
     timeoutId = setTimeout( allClear, Math.floor( MAX_COUNT / 3 + 1 ) * 8000 );
 });
 
-chrome.notifications.onButtonClicked.addListener(function( notificationId, buttonIndex) {
-    switch (buttonIndex) {
+chrome.notifications.onButtonClicked.addListener(function( notificationId, buttonIndex ) {
+    'use strict';
+    switch ( buttonIndex ) {
         case 0:
             allClear();
             break;
