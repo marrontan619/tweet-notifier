@@ -77,3 +77,19 @@ chrome.notifications.onClicked.addListener(function( notificationId ) {
     'use strict';
     chrome.notifications.clear( notificationId, noop );
 });
+
+chrome.runtime.onInstalled.addListener(function() {
+    'use strict';
+    chrome.stolage.local.get( 'tweet-notifier', function( items ) {
+        if ( items['tweet-notifer'] !== null ) {
+            chrome.storage.local.set({
+                'tweet-notifier': {
+                    'maxTweetVal': 5,
+                    'windowWidthVal': 500,
+                    'windowHeightVal': 400,
+                    'isIncognito': true
+                }
+            });
+        }
+    });
+});
