@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css" />
+  <title>Tweet Notifier</title>
+</head>
+<body>
+  <ul class="settings">
+    <li class="settings__item">
+      <label>
+        <span class="settings__label">ツイート読み込み数</span>
+        <input type="number" max="20" min="1" />
+      </label>
+    </li>
+    <li class="settings__item">
+      <span class="settings__label">リンクをクリックした時の新規ウインドウの大きさ</span>
+      <ul class="settings">
+        <li class="settings__item">
+          <span class="settings__label--align">幅</span>
+          <input type="number" />
+        </li>
+        <li class="settings__item">
+          <span class="settings__label--align">高さ</span>
+          <input type="number" />
+        </li>
+      </ul>
+    </li>
+    <li class="settings__item">
+      <label>
+        <input type="checkbox" />
+        <span class="settings__label">シークレットモードで開く</span>
+      </label>
+    </li>
+  </ul>
+</body>
+</html>

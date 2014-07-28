@@ -1,0 +1,22 @@
+body {
+  background: rgba(195, 195, 195, 0.59);
+}
+
+.settings {
+  width: 500px;
+  margin: auto;
+  list-style: none;
+}
+
+.settings__item {
+  margin: 1rem auto;
+}
+
+.settings__label {
+  font-weight: bold;
+}
+
+.settings__label--align {
+  display: inline-block;
+  width: 3rem;
+}
