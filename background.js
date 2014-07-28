@@ -22,12 +22,17 @@ xhr.addEventListener( 'load', function() {
             tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
             tweet = tweetParagraph.innerText,
             buttonItems = [{ title: 'Clear' }];
+        if ( tweetElements[i].querySelector('a.twitter-timeline-link') ) {
+            Array.apply( null, tweetElements[i].querySelectorAll('a.twitter-timeline-link') ).forEach(function( elem ) {
+                buttonItems.push({ title: elem.innerText });
+            });
+        }
         tweetLink[i] =
             tweetElements[i].querySelector('a.twitter-timeline-link') ?
                 tweetElements[i].querySelector('a.twitter-timeline-link').href : null;
-        if (tweetLink[i]) {
-            buttonItems.push({title: tweetLink[i]});
-        }
+//        if (tweetLink[i]) {
+//            buttonItems.push({title: tweetLink[i]});
+//        }
         chrome.notifications.create(
             String(i),
             {
