@@ -2,6 +2,11 @@ body {
   background: rgba(195, 195, 195, 0.59);
 }
 
+fieldset {
+    margin: 0;
+    border-style: none;
+}
+
 .settings {
   width: 500px;
   margin: auto;
