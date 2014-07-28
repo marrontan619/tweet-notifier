@@ -1,3 +1,4 @@
+/* global Event */
 document.addEventListener( 'DOMContentLoaded', function() {
     'use strict';
     var storage = chrome.storage.local,
@@ -5,7 +6,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
         maxTweet = document.getElementById('max-tweet'),
         windowWidth = document.getElementById('window-width'),
         windowHeight = document.getElementById('window-height'),
-        incognito = document.getElementById('is-incognito');
+        incognito = document.getElementById('is-incognito'),
+        demoWindow = document.getElementById('window-demo'),
+        windowDemo = function() {
+            demoWindow.style.width = windowWidth.value + 'px';
+            demoWindow.style.height = windowHeight.value + 'px';
+        };
 
     options.addEventListener( 'input', function() {
         var item = {},
@@ -27,6 +33,9 @@ document.addEventListener( 'DOMContentLoaded', function() {
         options.dispatchEvent( inputEvent );
     });
 
+    windowWidth.addEventListener( 'input', windowDemo );
+    windowHeight.addEventListener( 'input', windowDemo );
+
     storage.get( 'tweet-notifier', function( items ) {
         if ( items !== null ) {
             var item = items['tweet-notifier'];
@@ -34,6 +43,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
             windowWidth.value = item.windowWidthVal;
             windowHeight.value = item.windowHeightVal;
             incognito.checked = item.isIncognito;
+            windowDemo();
         }
     });
 });

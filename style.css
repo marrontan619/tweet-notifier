@@ -25,3 +25,7 @@ fieldset {
   display: inline-block;
   width: 3rem;
 }
+
+#window-demo {
+    background: rgb(255, 118, 0);
+}
