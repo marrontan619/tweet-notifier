@@ -2,15 +2,17 @@ var maxCount,
   windowWidth,
   windowHeight,
   isIncognito,
-  tweetLink = [],
+  notificationIds = [],
+  tweetLinks = [],
+  itemCounter = 0,
   timeoutId,
   xhr = new XMLHttpRequest(),
   noop = function() {},
   allClear = function() {
     'use strict';
-    for ( var j = 0; j < maxCount; j++ ) {
-      chrome.notifications.clear( String(j), noop );
-    }
+    notificationIds.forEach(function( id ) {
+      chrome.notifications.clear( id, noop );
+    });
   },
   setProperties = function() {
     'use strict';
@@ -20,6 +22,7 @@ var maxCount,
       windowWidth = item.windowWidthVal;
       windowHeight = item.windowHeightVal;
       isIncognito = item.isIncognito;
+      notificationIds.length = maxCount;
     });
   };
 
@@ -28,21 +31,26 @@ xhr.addEventListener( 'load', function() {
   'use strict';
   var tweetElements = this.response.querySelectorAll('div.original-tweet');
   for ( var i = 0; i < maxCount; i++ ) {
+    notificationIds[i] = String( itemCounter++ );
     var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
       icon = isRetweet ? 'retweet.jpg' : 'tweet.jpg',
       retweeter = isRetweet ? isRetweet.innerText : null,
       tweeter = tweetElements[i].dataset.name,
       tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
       tweet = tweetParagraph.innerText,
+      tweetLink = null,
       buttonItems = [{ title: 'Clear' }];
-    tweetLink[i] =
-      tweetElements[i].querySelector('a.twitter-timeline-link') ?
-        tweetElements[i].querySelector('a.twitter-timeline-link').href : null;
-    if (tweetLink[i]) {
-      buttonItems.push({title: tweetLink[i]});
+    tweetLink =
+      tweetElements[i].querySelectorAll('a.twitter-timeline-link') ?
+        tweetElements[i].querySelectorAll('a.twitter-timeline-link') : null;
+    if ( tweetLink ) {
+      for ( var j = 0; j < tweetLink.length; j++ ) {
+        buttonItems.push({ title: tweetLink[j].href });
+        tweetLinks[itemCounter++] = tweetLink[j].href;
+      }
     }
     chrome.notifications.create(
-      String(i),
+      notificationIds[i],
       {
         type: 'basic',
         iconUrl: icon,
@@ -59,6 +67,7 @@ xhr.addEventListener( 'load', function() {
 
 chrome.browserAction.onClicked.addListener(function() {
   'use strict';
+  itemCounter = 0;
   setProperties();
   clearTimeout( timeoutId );
   xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
@@ -75,7 +84,7 @@ chrome.notifications.onButtonClicked.addListener(function( notificationId, butto
     default:
       chrome.windows.create(
         {
-          url: tweetLink[Number( notificationId )],
+          url: tweetLinks[Number(notificationId) + buttonIndex],
           width: windowWidth,
           height: windowHeight,
           incognito: isIncognito
