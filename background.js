@@ -80,7 +80,7 @@ chrome.notifications.onClicked.addListener(function( notificationId ) {
 
 chrome.runtime.onInstalled.addListener(function() {
     'use strict';
-    chrome.stolage.local.get( 'tweet-notifier', function( items ) {
+    chrome.storage.local.get( 'tweet-notifier', function( items ) {
         if ( items['tweet-notifer'] !== null ) {
             chrome.storage.local.set({
                 'tweet-notifier': {
