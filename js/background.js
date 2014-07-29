@@ -33,7 +33,7 @@ xhr.addEventListener( 'load', function() {
   for ( var i = 0; i < maxCount; i++ ) {
     notificationIds[i] = String( itemCounter++ );
     var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
-      icon = isRetweet ? 'retweet.jpg' : 'tweet.jpg',
+      icon = isRetweet ? '/images/retweet.jpg' : '/images/tweet.jpg',
       retweeter = isRetweet ? isRetweet.innerText : null,
       tweeter = tweetElements[i].dataset.name,
       tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
