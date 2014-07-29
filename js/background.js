@@ -104,7 +104,7 @@ chrome.notifications.onClicked.addListener(function( notificationId ) {
 chrome.runtime.onInstalled.addListener(function() {
   'use strict';
   chrome.storage.local.get( 'tweet-notifier', function( items ) {
-    if ( items['tweet-notifer'] !== null ) {
+    if ( items['tweet-notifier'] === undefined ) {
       chrome.storage.local.set({
         'tweet-notifier': {
           'maxTweetVal': 5,
