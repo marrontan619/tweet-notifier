@@ -1,20 +1,33 @@
-var MAX_COUNT = 5,
+var maxCount,
+  windowWidth,
+  windowHeight,
+  isIncognito,
+  tweetLink = [],
+  timeoutId,
+  xhr = new XMLHttpRequest(),
   noop = function() {},
   allClear = function() {
     'use strict';
-    for ( var j = 0; j < MAX_COUNT; j++ ) {
+    for ( var j = 0; j < maxCount; j++ ) {
       chrome.notifications.clear( String(j), noop );
     }
   },
-  tweetLink = [],
-  timeoutId,
-  xhr = new XMLHttpRequest();
+  setProperties = function() {
+    'use strict';
+    chrome.storage.local.get( 'tweet-notifier', function( items ) {
+      var item = items['tweet-notifier'];
+      maxCount = item.maxTweetVal;
+      windowWidth = item.windowWidthVal;
+      windowHeight = item.windowHeightVal;
+      isIncognito = item.isIncognito;
+    });
+  };
 
 xhr.responseType = 'document';
 xhr.addEventListener( 'load', function() {
   'use strict';
   var tweetElements = this.response.querySelectorAll('div.original-tweet');
-  for ( var i = 0; i < MAX_COUNT; i++ ) {
+  for ( var i = 0; i < maxCount; i++ ) {
     var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
       icon = isRetweet ? 'retweet.jpg' : 'tweet.jpg',
       retweeter = isRetweet ? isRetweet.innerText : null,
@@ -46,10 +59,11 @@ xhr.addEventListener( 'load', function() {
 
 chrome.browserAction.onClicked.addListener(function() {
   'use strict';
+  setProperties();
   clearTimeout( timeoutId );
   xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
   xhr.send();
-  timeoutId = setTimeout( allClear, Math.floor( MAX_COUNT / 3 + 1 ) * 8000 );
+  timeoutId = setTimeout( allClear, Math.floor( maxCount / 3 + 1 ) * 8000 );
 });
 
 chrome.notifications.onButtonClicked.addListener(function( notificationId, buttonIndex ) {
@@ -62,9 +76,9 @@ chrome.notifications.onButtonClicked.addListener(function( notificationId, butto
       chrome.windows.create(
         {
           url: tweetLink[Number( notificationId )],
-          width: 500,
-          height: 400,
-          incognito: true
+          width: windowWidth,
+          height: windowHeight,
+          incognito: isIncognito
         },
         noop
       );
