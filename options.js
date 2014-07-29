@@ -51,7 +51,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
     windowHeight.addEventListener( 'input', windowDemo );
 
     storage.get( 'tweet-notifier', function( items ) {
-        if ( items !== null ) {
+        if ( items['tweet-notifier'] !== null ) {
             var item = items['tweet-notifier'];
             maxTweet.value = item.maxTweetVal;
             windowWidth.value = item.windowWidthVal;
