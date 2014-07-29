@@ -11,6 +11,20 @@ document.addEventListener( 'DOMContentLoaded', function() {
         windowDemo = function() {
             demoWindow.style.width = windowWidth.value + 'px';
             demoWindow.style.height = windowHeight.value + 'px';
+        },
+        setStorageItem = function() {
+          var item = {},
+            maxTweetVal = Math.min( maxTweet.value, 20 ),
+            windowWidthVal = Math.max( windowWidth.value, 1 ),
+            windowHeightVal = Math.max( windowHeight.value, 1 ),
+            isIncognito = incognito.checked;
+          item['tweet-notifier'] = {
+            'maxTweetVal': maxTweetVal,
+            'windowWidthVal': windowWidthVal,
+            'windowHeightVal': windowHeightVal,
+            'isIncognito': isIncognito
+          };
+          storage.set(item, function() {});
         };
 
     options.addEventListener( 'input', function() {
