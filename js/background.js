@@ -21,6 +21,25 @@ var maxCount,
       windowHeight = item.windowHeightVal;
       isIncognito = item.isIncognito;
     });
+  },
+  buttonClicked = {
+    0: function() {
+      'use strict';
+      allClear();
+    },
+    1: function( notificationId ) {
+      'use strict';
+      chrome.windows.create(
+        {
+          url: tweetLink[Number( notificationId )],
+          width: windowWidth,
+          height: windowHeight,
+          incognito: isIncognito
+        },
+        noop
+      );
+      chrome.notifications.clear( notificationId, noop );
+    }
   };
 
 xhr.responseType = 'document';
@@ -68,23 +87,7 @@ chrome.browserAction.onClicked.addListener(function() {
 
 chrome.notifications.onButtonClicked.addListener(function( notificationId, buttonIndex ) {
   'use strict';
-  switch ( buttonIndex ) {
-    case 0:
-      allClear();
-      break;
-    default:
-      chrome.windows.create(
-        {
-          url: tweetLink[Number( notificationId )],
-          width: windowWidth,
-          height: windowHeight,
-          incognito: isIncognito
-        },
-        noop
-      );
-      chrome.notifications.clear( notificationId, noop );
-      break;
-  }
+  buttonClicked[buttonIndex]( notificationId );
 });
 
 chrome.notifications.onClicked.addListener(function( notificationId ) {
