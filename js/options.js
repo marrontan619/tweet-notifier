@@ -27,20 +27,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
           storage.set(item, function() {});
         };
 
-    options.addEventListener( 'input', function() {
-        var item = {},
-            maxTweetVal = Math.min( maxTweet.value, 20 ),
-            windowWidthVal = Math.max( windowWidth.value, 1 ),
-            windowHeightVal = Math.max( windowHeight.value, 1 ),
-            isIncognito = incognito.checked;
-        item['tweet-notifier'] = {
-            'maxTweetVal': maxTweetVal,
-            'windowWidthVal': windowWidthVal,
-            'windowHeightVal': windowHeightVal,
-            'isIncognito': isIncognito
-        };
-        storage.set(item, function() {});
-    });
+    options.addEventListener( 'input', setStorageItem );
 
     incognito.addEventListener( 'change', function() {
         var inputEvent = new Event('input');
