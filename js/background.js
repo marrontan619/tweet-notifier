@@ -80,6 +80,7 @@ chrome.browserAction.onClicked.addListener(function() {
   'use strict';
   setProperties();
   clearTimeout( timeoutId );
+  allClear();
   xhr.open( 'GET', 'https://twitter.com/?lang=ja' );
   xhr.send();
   timeoutId = setTimeout( allClear, Math.floor( maxCount / 3 + 1 ) * 8000 );
