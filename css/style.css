@@ -7,10 +7,15 @@ fieldset {
     border-style: none;
 }
 
+.login-state,
 .settings {
   width: 500px;
   margin: auto;
   list-style: none;
+}
+
+.login-state {
+  text-align: center;
 }
 
 .settings__item {

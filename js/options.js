@@ -1,5 +1,5 @@
 /* global Event */
-document.addEventListener( 'DOMContentLoaded', function() {
+$(function() {
   'use strict';
   var storage = chrome.storage.local,
     options = document.getElementById('options'),
@@ -47,4 +47,19 @@ document.addEventListener( 'DOMContentLoaded', function() {
       windowDemo();
     }
   });
+
+  // ログイン状態の判定
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener( 'load', function() {
+    if ( this.response.querySelector('.t1-form.signin') ) {
+      $('<a/>')
+        .attr( 'href', 'http://twitter.com')
+        .attr( 'target', '_brank' )
+        .html('ログイン画面へ')
+        .appendTo( $('.login-state') );
+    }
+  });
+  xhr.responseType = 'document';
+  xhr.open( 'POST', 'https://twitter.com/sessions' );
+  xhr.send();
 });
