@@ -57,6 +57,10 @@ $(function() {
         .attr( 'target', '_brank' )
         .html('ログイン画面へ')
         .appendTo( $('.login-state') );
+    } else if ( this.response.querySelector('a.u-textInheritColor') ) {
+      $('<span/>')
+        .html( this.response.querySelector('a.u-textInheritColor').innerText + 'でログインしています。' )
+        .appendTo( $('.login-state') );
     }
   });
   xhr.responseType = 'document';
