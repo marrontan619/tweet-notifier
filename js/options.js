@@ -52,15 +52,15 @@ $(function() {
   var xhr = new XMLHttpRequest();
   xhr.addEventListener( 'load', function() {
     if ( this.response.querySelector('.t1-form.signin') ) {
-      $('<a/>')
-        .attr( 'href', 'http://twitter.com')
-        .attr( 'target', '_brank' )
-        .html('ログイン画面へ')
-        .appendTo( $('.login-state') );
+      $('<a/>', {
+        'href': 'http://twitter.com',
+        'target': '_brank',
+        'text': 'ログイン画面へ'
+      }).appendTo( $('.login-state') );
     } else if ( this.response.querySelector('a.u-textInheritColor') ) {
-      $('<span/>')
-        .html( this.response.querySelector('a.u-textInheritColor').innerText + 'でログインしています。' )
-        .appendTo( $('.login-state') );
+      $('<span/>', {
+        'text': this.response.querySelector('a.u-textInheritColor').innerText + 'でログインしています。'
+      }).appendTo( $('.login-state') );
     }
   });
   xhr.responseType = 'document';
