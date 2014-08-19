@@ -48,7 +48,7 @@ xhr.addEventListener( 'load', function() {
   var tweetElements = this.response.querySelectorAll('div.original-tweet');
   for ( var i = maxCount - 1; i >= 0; i-- ) {
     var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
-      icon = isRetweet ? '/images/retweet.jpg' : '/images/tweet.jpg',
+      icon = tweetElements[i].querySelector('img').getAttribute('src'),
       retweeter = isRetweet ? isRetweet.innerText : null,
       tweeter = tweetElements[i].dataset.name,
       tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
