@@ -45,8 +45,9 @@ var maxCount,
 xhr.responseType = 'document';
 xhr.addEventListener( 'load', function() {
   'use strict';
-  var tweetElements = this.response.querySelectorAll('div.original-tweet');
-  for ( var i = maxCount - 1; i >= 0; i-- ) {
+  var tweetElements = this.response.querySelectorAll('div.original-tweet'),
+    displayed = 0;
+  for ( var i = 0; displayed < maxCount; i++ ) {
     var isRetweet = tweetElements[i].querySelector('.js-retweet-text'),
       icon = isRetweet ? '/images/retweet.jpg' : '/images/tweet.jpg',
       retweeter = isRetweet ? isRetweet.innerText : null,
@@ -54,6 +55,9 @@ xhr.addEventListener( 'load', function() {
       tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
       tweet = tweetParagraph.innerText,
       buttonItems = [{ title: 'Clear' }];
+    if ( tweetElements[i].querySelector('.Icon--promoted') !== null ) {
+      continue;
+    }
     tweetLink[i] =
       tweetElements[i].querySelector('a.twitter-timeline-link') ?
         tweetElements[i].querySelector('a.twitter-timeline-link').href : null;
@@ -73,6 +77,7 @@ xhr.addEventListener( 'load', function() {
       },
       noop
     );
+    displayed++;
   }
 });
 
