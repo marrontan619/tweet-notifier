@@ -55,7 +55,7 @@ xhr.addEventListener( 'load', function() {
       tweetParagraph = tweetElements[i].querySelector('p.js-tweet-text.tweet-text'),
       tweet = tweetParagraph.innerText,
       buttonItems = [{ title: 'Clear' }];
-    if ( tweetElements[i].querySelector('.Icon--promoted') !== null ) {
+    if ( tweetElements[i].querySelector('.js-action-profile-promoted') !== null ) {
       continue;
     }
     tweetLink[i] =
